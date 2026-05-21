@@ -16,9 +16,24 @@ Open http://localhost:8080
 Fonts load from [Google Fonts](https://fonts.google.com) via the stylesheet link in `index.html`:
 
 - **Source Serif 4** (600–700) — hero title (`Hi, I'm Raisa`)
-- **Lora** (400, 500, 600; italic 400 for the headline) — headline, about copy, buttons, footer
+- **Lora** (400, 500, 600) — about copy, buttons, footer
 
 CSS variables in `styles.css`: `--font-title` and `--font-body`. No API key or kit setup required.
+
+## Color palette
+
+Photo-inspired, bright editorial theme (see `:root` in `styles.css`):
+
+| Role | Variable | Hex |
+|------|----------|-----|
+| Background | `--bg` | `#faf7f2` (warm cream) |
+| Background soft | `--bg-soft` | `#f4f7fa` (light blue-white) |
+| Text | `--text` | `#2d2a26` |
+| Muted | `--muted` | `#6b6560` |
+| Primary CTA | `--accent` | `#b85c4a` (brick terracotta) |
+| Secondary / links | `--accent-secondary` | `#7a9eb8` (sky blue, knit outfit) |
+| Mint accent | `--accent-mint` | `#8fbfb0` (Fiat) |
+| Borders | `--border` | `#e8e2d9` |
 
 ## Portrait images
 
@@ -35,7 +50,7 @@ See `images/README.md` for details.
 | File | Purpose |
 |------|---------|
 | `index.html` | Content and structure |
-| `styles.css` | Stripe-inspired light theme, layered portraits, animations |
+| `styles.css` | Photo-inspired light theme, layered portraits, animations |
 | `script.js` | Parallax on pointer/scroll, footer year |
 | `images/` | Portrait assets |
 
