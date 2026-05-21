@@ -37,20 +37,20 @@ Photo-inspired, bright editorial theme (see `:root` in `styles.css`):
 
 ## Portrait images
 
-Drop three portrait photos into `images/`:
+Drop three portrait photos into `images/` (left → right in the gallery):
 
-- `portrait-1.jpg` (back layer)
-- `portrait-2.jpg` (middle)
-- `portrait-3.jpg` (front)
+- `portrait-fiat.jpg` — mint-green Fiat, light-blue knit
+- `portrait-trench.jpg` — tan trench, headscarf, sunglasses
+- `portrait-brownstone.jpg` — red door, brownstone steps
 
-See `images/README.md` for details.
+See `images/README.md` for the full mapping (Desktop `portrait-1` / `portrait-2` names do **not** match these files).
 
 ## Project files
 
 | File | Purpose |
 |------|---------|
 | `index.html` | Content and structure |
-| `styles.css` | Photo-inspired light theme, layered portraits, animations |
+| `styles.css` | Photo-inspired light theme, horizontal portrait gallery, animations |
 | `script.js` | Parallax on pointer/scroll, footer year |
 | `images/` | Portrait assets |
 
