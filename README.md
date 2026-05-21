@@ -11,24 +11,14 @@ python3 -m http.server 8080
 
 Open http://localhost:8080
 
-## Typography (Minion via Adobe Fonts)
+## Typography (Google Fonts)
 
-The site uses **Minion** for all text. Minion is a commercial Adobe font.
+Fonts load from [Google Fonts](https://fonts.google.com) via the stylesheet link in `index.html`:
 
-1. Sign in at [fonts.adobe.com](https://fonts.adobe.com) and create a **Web Project** (kit).
-2. Add **Minion Pro** (or Minion 3) to the kit and publish.
-3. Copy your kit ID from the embed code (`https://use.typekit.net/xxxxxxx.css`).
-4. In `index.html`, uncomment the Typekit line and replace `YOUR_KIT_ID`:
+- **Source Serif 4** (600–700) — hero title (`Hi, I'm Raisa`)
+- **Lora** (400, 500, 600; italic 400 for the headline) — headline, about copy, buttons, footer
 
-```html
-<link rel="stylesheet" href="https://use.typekit.net/xxxxxxx.css" />
-```
-
-Until the kit is linked, the site falls back to **Minion Pro**, **Minion 3**, and **Georgia** (macOS users with Adobe fonts installed may see Minion locally).
-
-### Self-hosted alternative
-
-Place licensed `.woff2` files in `fonts/` and add `@font-face` rules in `styles.css`, then set `--font-serif` to your family name.
+CSS variables in `styles.css`: `--font-title` and `--font-body`. No API key or kit setup required.
 
 ## Portrait images
 

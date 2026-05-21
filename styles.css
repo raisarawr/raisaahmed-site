@@ -11,8 +11,8 @@
   --shadow-md: 0 8px 24px rgba(10, 37, 64, 0.1);
   --shadow-lg: 0 16px 40px rgba(10, 37, 64, 0.14);
   --max-width: 42rem;
-  --font-serif: "minion-pro", "Minion Pro", "Minion 3", Minion, Georgia,
-    "Times New Roman", serif;
+  --font-title: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Lora", Georgia, "Times New Roman", serif;
   --radius-pill: 9999px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -45,7 +45,7 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--text);
@@ -74,7 +74,7 @@ body {
 
 .name {
   margin: 0 0 0.5rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: clamp(2.25rem, 7vw, 3.25rem);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -84,7 +84,7 @@ body {
 
 .headline {
   margin: 0;
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 1.25rem;
   font-weight: 400;
   font-style: italic;
@@ -267,7 +267,7 @@ body {
 /* —— About —— */
 
 .about {
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--text);
@@ -293,7 +293,7 @@ body {
 .link {
   display: block;
   padding: 0.95rem 1.75rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
@@ -346,7 +346,7 @@ body {
 
 .footer p {
   margin: 0;
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 0.875rem;
   color: var(--muted);
 }
