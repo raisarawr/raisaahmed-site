@@ -92,76 +92,34 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* —— Layered portraits —— */
+/* —— Portrait gallery —— */
 
 .portraits {
-  position: relative;
   width: 100%;
-  min-height: 22rem;
-  margin: 0 auto;
 }
 
-.portrait-stack {
-  position: relative;
-  width: min(100%, 20rem);
-  height: 20rem;
-  margin: 0 auto;
-  perspective: 900px;
-  transform-style: preserve-3d;
+.portrait-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.5rem, 2vw, 1rem);
+  width: 100%;
 }
 
 .portrait {
-  position: absolute;
   margin: 0;
-  width: 58%;
-  opacity: 0;
-  transform-style: preserve-3d;
-}
-
-.portrait__inner {
-  will-change: transform;
-  transition: transform 0.35s var(--ease-out);
-}
-
-.portrait.is-visible {
-  opacity: 1;
-}
-
-.portrait--back {
-  top: 4%;
-  left: 0;
-  z-index: 1;
-  transform: rotate(-8deg) translateY(12px);
-  animation: portrait-enter-back 0.9s var(--ease-out) 0.15s forwards,
-    float-slow 7s ease-in-out 1.2s infinite;
-}
-
-.portrait--mid {
-  top: 14%;
-  right: 0;
-  z-index: 2;
-  width: 54%;
-  transform: rotate(5deg) translateY(8px);
-  animation: portrait-enter-mid 0.9s var(--ease-out) 0.35s forwards,
-    float-mid 6s ease-in-out 1.4s infinite;
-}
-
-.portrait--front {
-  bottom: 0;
-  left: 22%;
-  z-index: 3;
-  width: 52%;
-  transform: rotate(-2deg);
-  animation: portrait-enter-front 0.9s var(--ease-out) 0.55s forwards,
-    float-front 5.5s ease-in-out 1.6s infinite;
+  opacity: 0.42;
+  transition: opacity 0.35s var(--ease-out);
+  outline: none;
+  cursor: default;
 }
 
 .portrait__frame {
-  border-radius: 1.25rem;
+  position: relative;
+  border-radius: 0.75rem;
   overflow: hidden;
   background: var(--bg-soft);
-  border: 3px solid var(--bg);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
   transition: box-shadow 0.35s var(--ease-out), transform 0.35s var(--ease-out);
 }
 
@@ -170,12 +128,8 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 0 0 1px var(--border);
+  box-shadow: inset 0 0 0 1px rgba(10, 37, 64, 0.06);
   pointer-events: none;
-}
-
-.portrait__frame {
-  position: relative;
 }
 
 .portrait img {
@@ -187,80 +141,63 @@ body {
   background: linear-gradient(135deg, var(--bg-soft) 0%, var(--border) 100%);
 }
 
-.portrait--back .portrait__frame {
-  box-shadow: var(--shadow-md);
+.portrait:focus-visible {
+  opacity: 1;
 }
 
-.portrait--front .portrait__frame {
-  border-color: #fff;
+.portrait:focus-visible .portrait__frame {
+  box-shadow: var(--shadow-lg);
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
-.portrait:hover .portrait__frame,
-.portrait:focus-within .portrait__frame {
-  box-shadow: var(--shadow-lg), 0 0 0 2px var(--accent-soft);
-  transform: scale(1.03) rotate(0deg);
-}
-
-@keyframes portrait-enter-back {
-  from {
-    opacity: 0;
-    transform: rotate(-14deg) translateY(28px) scale(0.92);
+@media (hover: hover) {
+  .portrait-gallery:hover .portrait {
+    opacity: 0.38;
   }
-  to {
+
+  .portrait-gallery .portrait:hover,
+  .portrait-gallery .portrait:focus-within,
+  .portrait-gallery .portrait:focus-visible {
     opacity: 1;
-    transform: rotate(-8deg) translateY(12px) scale(1);
+  }
+
+  .portrait:hover .portrait__frame,
+  .portrait:focus-within .portrait__frame,
+  .portrait:focus-visible .portrait__frame {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+
+  .portrait:focus-visible .portrait__frame {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
   }
 }
 
-@keyframes portrait-enter-mid {
-  from {
-    opacity: 0;
-    transform: rotate(12deg) translateX(20px) scale(0.9);
+@media (hover: none) {
+  .portrait {
+    opacity: 0.5;
+    cursor: pointer;
   }
-  to {
+
+  .portrait.is-active {
     opacity: 1;
-    transform: rotate(5deg) translateY(8px) scale(1);
+  }
+
+  .portrait.is-active .portrait__frame {
+    box-shadow: var(--shadow-lg);
   }
 }
 
-@keyframes portrait-enter-front {
-  from {
-    opacity: 0;
-    transform: rotate(-6deg) translateY(24px) scale(0.88);
-  }
-  to {
+@media (prefers-reduced-motion: reduce) {
+  .portrait-gallery .portrait {
     opacity: 1;
-    transform: rotate(-2deg) scale(1);
+    cursor: default;
   }
-}
 
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: rotate(-8deg) translateY(12px);
-  }
-  50% {
-    transform: rotate(-6deg) translateY(4px);
-  }
-}
-
-@keyframes float-mid {
-  0%,
-  100% {
-    transform: rotate(5deg) translateY(8px);
-  }
-  50% {
-    transform: rotate(7deg) translateY(0);
-  }
-}
-
-@keyframes float-front {
-  0%,
-  100% {
-    transform: rotate(-2deg) translateY(0);
-  }
-  50% {
-    transform: rotate(1deg) translateY(-6px);
+  .portrait-gallery .portrait .portrait__frame {
+    transform: none;
   }
 }
 
@@ -372,32 +309,25 @@ body {
   }
 
   .hero {
-    grid-template-columns: 1fr 1.1fr;
-    align-items: center;
-    gap: 2rem 3rem;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
     margin-bottom: 3rem;
   }
 
-  .portraits {
-    min-height: 24rem;
+  .hero__intro {
+    max-width: 28rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .portrait-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .portrait-stack {
-    width: 22rem;
-    height: 24rem;
-    margin: 0 0 0 auto;
-  }
-
-  .portrait--back {
-    width: 56%;
-  }
-
-  .portrait--mid {
-    width: 52%;
-  }
-
-  .portrait--front {
-    width: 50%;
+  .portrait-gallery .portrait:last-child {
+    grid-column: 1 / -1;
+    width: min(100%, 14rem);
+    justify-self: center;
   }
 }
 
