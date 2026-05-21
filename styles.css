@@ -1,12 +1,20 @@
 :root {
-  --bg: #0f0f0f;
-  --text: #f2f0eb;
-  --muted: #a8a49c;
-  --accent: #d4a574;
-  --border: #2a2a2a;
-  --max-width: 36rem;
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", Times, serif;
+  --bg: #ffffff;
+  --bg-soft: #f6f9fc;
+  --text: #0a2540;
+  --muted: #425466;
+  --accent: #635bff;
+  --accent-hover: #7a73ff;
+  --accent-soft: rgba(99, 91, 255, 0.12);
+  --border: #e3e8ee;
+  --shadow-sm: 0 2px 8px rgba(10, 37, 64, 0.06);
+  --shadow-md: 0 8px 24px rgba(10, 37, 64, 0.1);
+  --shadow-lg: 0 16px 40px rgba(10, 37, 64, 0.14);
+  --max-width: 42rem;
+  --font-serif: "minion-pro", "Minion Pro", "Minion 3", Minion, Georgia,
+    "Times New Roman", serif;
+  --radius-pill: 9999px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 *,
@@ -17,44 +25,246 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.65;
   color: var(--text);
-  background: var(--bg);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+  background-attachment: fixed;
 }
 
 .page {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 3rem 1.5rem 4rem;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
+/* —— Hero —— */
+
 .hero {
-  margin-bottom: 2.5rem;
+  display: grid;
+  gap: 2.5rem;
+  margin-bottom: 2.75rem;
+}
+
+.hero__intro {
+  position: relative;
+  z-index: 2;
 }
 
 .name {
-  margin: 0 0 0.35rem;
-  font-size: clamp(2rem, 6vw, 2.75rem);
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.1;
+  color: var(--text);
 }
 
 .headline {
   margin: 0;
-  font-size: 1.125rem;
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  font-style: italic;
   color: var(--accent);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
+
+/* —— Layered portraits —— */
+
+.portraits {
+  position: relative;
+  width: 100%;
+  min-height: 22rem;
+  margin: 0 auto;
+}
+
+.portrait-stack {
+  position: relative;
+  width: min(100%, 20rem);
+  height: 20rem;
+  margin: 0 auto;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.portrait {
+  position: absolute;
+  margin: 0;
+  width: 58%;
+  opacity: 0;
+  transform-style: preserve-3d;
+}
+
+.portrait__inner {
+  will-change: transform;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.portrait.is-visible {
+  opacity: 1;
+}
+
+.portrait--back {
+  top: 4%;
+  left: 0;
+  z-index: 1;
+  transform: rotate(-8deg) translateY(12px);
+  animation: portrait-enter-back 0.9s var(--ease-out) 0.15s forwards,
+    float-slow 7s ease-in-out 1.2s infinite;
+}
+
+.portrait--mid {
+  top: 14%;
+  right: 0;
+  z-index: 2;
+  width: 54%;
+  transform: rotate(5deg) translateY(8px);
+  animation: portrait-enter-mid 0.9s var(--ease-out) 0.35s forwards,
+    float-mid 6s ease-in-out 1.4s infinite;
+}
+
+.portrait--front {
+  bottom: 0;
+  left: 22%;
+  z-index: 3;
+  width: 52%;
+  transform: rotate(-2deg);
+  animation: portrait-enter-front 0.9s var(--ease-out) 0.55s forwards,
+    float-front 5.5s ease-in-out 1.6s infinite;
+}
+
+.portrait__frame {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: var(--bg-soft);
+  border: 3px solid var(--bg);
+  box-shadow: var(--shadow-lg);
+  transition: box-shadow 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+}
+
+.portrait__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--border);
+  pointer-events: none;
+}
+
+.portrait__frame {
+  position: relative;
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--bg-soft) 0%, var(--border) 100%);
+}
+
+.portrait--back .portrait__frame {
+  box-shadow: var(--shadow-md);
+}
+
+.portrait--front .portrait__frame {
+  border-color: #fff;
+}
+
+.portrait:hover .portrait__frame,
+.portrait:focus-within .portrait__frame {
+  box-shadow: var(--shadow-lg), 0 0 0 2px var(--accent-soft);
+  transform: scale(1.03) rotate(0deg);
+}
+
+@keyframes portrait-enter-back {
+  from {
+    opacity: 0;
+    transform: rotate(-14deg) translateY(28px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-8deg) translateY(12px) scale(1);
+  }
+}
+
+@keyframes portrait-enter-mid {
+  from {
+    opacity: 0;
+    transform: rotate(12deg) translateX(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(5deg) translateY(8px) scale(1);
+  }
+}
+
+@keyframes portrait-enter-front {
+  from {
+    opacity: 0;
+    transform: rotate(-6deg) translateY(24px) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-2deg) scale(1);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: rotate(-8deg) translateY(12px);
+  }
+  50% {
+    transform: rotate(-6deg) translateY(4px);
+  }
+}
+
+@keyframes float-mid {
+  0%,
+  100% {
+    transform: rotate(5deg) translateY(8px);
+  }
+  50% {
+    transform: rotate(7deg) translateY(0);
+  }
+}
+
+@keyframes float-front {
+  0%,
+  100% {
+    transform: rotate(-2deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1deg) translateY(-6px);
+  }
+}
+
+/* —— About —— */
 
 .about {
   font-family: var(--font-serif);
@@ -71,46 +281,62 @@ body {
   margin-bottom: 0;
 }
 
+/* —— Links / buttons —— */
+
 .links {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.875rem;
   margin-top: 2.75rem;
 }
 
 .link {
   display: block;
-  padding: 0.875rem 1.25rem;
-  font-size: 0.9375rem;
+  padding: 0.95rem 1.75rem;
+  font-family: var(--font-serif);
+  font-size: 1rem;
   font-weight: 500;
   text-align: center;
   text-decoration: none;
   color: var(--text);
-  background: transparent;
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out),
+    border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .link:hover,
 .link:focus-visible {
   border-color: var(--accent);
   color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
   outline: none;
+}
+
+.link:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .link--primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--bg);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(99, 91, 255, 0.35);
 }
 
 .link--primary:hover,
 .link--primary:focus-visible {
-  background: #e0b88a;
-  border-color: #e0b88a;
-  color: var(--bg);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(99, 91, 255, 0.45);
 }
+
+/* —— Footer —— */
 
 .footer {
   margin-top: 3.5rem;
@@ -120,7 +346,8 @@ body {
 
 .footer p {
   margin: 0;
-  font-size: 0.8125rem;
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
@@ -136,8 +363,47 @@ body {
   border: 0;
 }
 
+/* —— Wider layout —— */
+
+@media (min-width: 640px) {
+  .page {
+    padding-top: 3.5rem;
+    max-width: 52rem;
+  }
+
+  .hero {
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 2rem 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .portraits {
+    min-height: 24rem;
+  }
+
+  .portrait-stack {
+    width: 22rem;
+    height: 24rem;
+    margin: 0 0 0 auto;
+  }
+
+  .portrait--back {
+    width: 56%;
+  }
+
+  .portrait--mid {
+    width: 52%;
+  }
+
+  .portrait--front {
+    width: 50%;
+  }
+}
+
 @media (min-width: 480px) {
   .page {
-    padding-top: 4.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }

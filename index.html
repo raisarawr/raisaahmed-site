@@ -3,25 +3,76 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Raisa Ahmed — Builder</title>
+    <title>Hi, I'm Raisa — Product lead</title>
     <meta
       name="description"
       content="Raised in NYC housing projects. Self-made millionaire by 30. Writing on grit, ambition, and belonging in rooms you weren't born into."
     />
-    <meta property="og:title" content="Raisa Ahmed — Builder" />
+    <meta property="og:title" content="Hi, I'm Raisa — Product lead" />
     <meta
       property="og:description"
       content="Raised in NYC housing projects. Self-made millionaire by 30. Writing on grit, ambition, and belonging."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://raisaahmed.com" />
+    <!-- Adobe Fonts: replace YOUR_KIT_ID with your Typekit kit ID (see README.md) -->
+    <!-- <link rel="stylesheet" href="https://use.typekit.net/YOUR_KIT_ID.css" /> -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="page">
       <header class="hero">
-        <h1 class="name">Raisa Ahmed</h1>
-        <p class="headline">Builder</p>
+        <div class="hero__intro">
+          <h1 class="name">Hi, I'm Raisa</h1>
+          <p class="headline">Product lead</p>
+        </div>
+
+        <div class="portraits" aria-label="Portrait gallery">
+          <div class="portrait-stack" id="portrait-stack">
+            <figure class="portrait portrait--back">
+              <div class="portrait__inner" data-depth="0.15">
+                <div class="portrait__frame">
+                  <img
+                    src="images/portrait-1.jpg"
+                    alt=""
+                    width="320"
+                    height="400"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </figure>
+            <figure class="portrait portrait--mid">
+              <div class="portrait__inner" data-depth="0.35">
+                <div class="portrait__frame">
+                  <img
+                    src="images/portrait-2.jpg"
+                    alt=""
+                    width="300"
+                    height="380"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </figure>
+            <figure class="portrait portrait--front">
+              <div class="portrait__inner" data-depth="0.55">
+                <div class="portrait__frame">
+                  <img
+                    src="images/portrait-3.jpg"
+                    alt="Raisa Ahmed"
+                    width="280"
+                    height="360"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </figure>
+          </div>
+        </div>
       </header>
 
       <section class="about" aria-labelledby="about-heading">
@@ -44,7 +95,7 @@
 
       <nav class="links" aria-label="Social and newsletter links">
         <a class="link link--primary" href="https://substack.com/@raisarawr"
-          >Newsletter</a
+          >Substack</a
         >
         <a class="link" href="https://www.instagram.com/raisarawr/"
           >Instagram</a
@@ -60,8 +111,6 @@
         <p>&copy; <span id="year"></span> Raisa Ahmed</p>
       </footer>
     </main>
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
+    <script src="script.js" defer></script>
   </body>
 </html>
