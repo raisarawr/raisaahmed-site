@@ -4,6 +4,7 @@ const PRODUCT_NAMES = {
 };
 
 const catalog = document.querySelector(".catalog");
+const shopNotice = document.getElementById("shop-notice");
 const checkoutSection = document.getElementById("checkout");
 const checkoutTitle = document.getElementById("checkout-product-name");
 const cancelBtn = document.getElementById("checkout-cancel");
@@ -19,12 +20,29 @@ let checkout = null;
 let actions = null;
 let paymentElement = null;
 
+function showNotice(text) {
+  if (!shopNotice) return;
+  if (text) {
+    shopNotice.textContent = text;
+    shopNotice.hidden = false;
+  } else {
+    shopNotice.textContent = "";
+    shopNotice.hidden = true;
+  }
+}
+
 async function getPublishableKey() {
   const res = await fetch("/api/config");
   if (!res.ok) {
-    throw new Error("Payment system is not configured yet.");
+    const body = await res.json().catch(() => ({}));
+    throw new Error(
+      body.error ?? `Payment config failed (${res.status}). Check Vercel env vars.`
+    );
   }
   const { publishableKey } = await res.json();
+  if (!publishableKey) {
+    throw new Error("Missing publishable key from /api/config.");
+  }
   return publishableKey;
 }
 
@@ -70,27 +88,46 @@ async function validateEmail(email) {
 }
 
 async function startCheckout(productId) {
+  showNotice("Loading checkout…");
   setLoading(true);
   showMessage("");
 
   try {
+    if (typeof Stripe === "undefined") {
+      throw new Error(
+        "Stripe.js did not load. Check your network or ad blocker."
+      );
+    }
+
     const publishableKey = await getPublishableKey();
     const stripe = Stripe(publishableKey);
 
-    const clientSecretPromise = fetch("/api/create-checkout-session", {
+    if (typeof stripe.initCheckoutElementsSdk !== "function") {
+      throw new Error(
+        "Stripe Checkout SDK is unavailable. Try refreshing the page."
+      );
+    }
+
+    let clientSecret;
+    const sessionRes = await fetch("/api/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ productId }),
-    })
-      .then((r) => {
-        if (!r.ok) {
-          return r.json().then((d) => {
-            throw new Error(d.error ?? "Could not start checkout.");
-          });
-        }
-        return r.json();
-      })
-      .then((data) => data.clientSecret);
+    });
+    const sessionData = await sessionRes.json().catch(() => ({}));
+    if (!sessionRes.ok) {
+      const detail = sessionData.detail
+        ? ` ${sessionData.detail}`
+        : "";
+      throw new Error(
+        (sessionData.error ?? `Checkout API failed (${sessionRes.status}).`) +
+          detail
+      );
+    }
+    if (!sessionData.clientSecret) {
+      throw new Error("No client secret returned from checkout API.");
+    }
+    clientSecret = sessionData.clientSecret;
 
     const appearance = {
       theme: "stripe",
@@ -104,7 +141,7 @@ async function startCheckout(productId) {
     };
 
     checkout = stripe.initCheckoutElementsSdk({
-      clientSecret: clientSecretPromise,
+      clientSecret,
       elementsOptions: { appearance },
     });
 
@@ -126,24 +163,34 @@ async function startCheckout(productId) {
     }
     actions = loadActionsResult.actions;
 
+    showNotice("");
     showCheckout(productId);
   } catch (err) {
-    showMessage(err.message ?? "Something went wrong.");
+    console.error("[shop] checkout failed:", err);
     hideCheckout();
+    showNotice(err.message ?? "Something went wrong. See the browser console for details.");
   } finally {
     setLoading(false);
   }
 }
 
-catalog.addEventListener("click", (e) => {
-  const btn = e.target.closest(".product-card__buy");
-  if (!btn) return;
-  const card = btn.closest("[data-product-id]");
-  const productId = card?.dataset.productId;
-  if (productId) startCheckout(productId);
-});
+if (!catalog) {
+  showNotice("Shop script could not find the product catalog.");
+  console.error("[shop] .catalog element missing");
+} else {
+  catalog.addEventListener("click", (e) => {
+    const btn = e.target.closest(".product-card__buy");
+    if (!btn) return;
+    const card = btn.closest("[data-product-id]");
+    const productId = card?.dataset.productId;
+    if (productId) startCheckout(productId);
+  });
+}
 
-cancelBtn.addEventListener("click", hideCheckout);
+cancelBtn.addEventListener("click", () => {
+  hideCheckout();
+  showNotice("");
+});
 
 emailInput.addEventListener("input", () => {
   emailErrors.textContent = "";

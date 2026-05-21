@@ -71,6 +71,20 @@ body {
   font-size: 1.0625rem;
 }
 
+.shop-notice {
+  margin: 0 0 1.25rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.9375rem;
+  color: var(--accent);
+  background: rgba(184, 92, 74, 0.1);
+  border: 1px solid var(--accent);
+  border-radius: 0.65rem;
+}
+
+.shop-notice:not([hidden]) {
+  display: block;
+}
+
 .catalog {
   display: grid;
   gap: 1.25rem;
