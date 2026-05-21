@@ -3,19 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shop — Raisa Ahmed</title>
+    <title>Raisa&rsquo;s Stripe Shop — Raisa Ahmed</title>
     <meta name="description" content="Guides and resources from Raisa Ahmed." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
     />
     <link rel="stylesheet" href="/shop/shop.css" />
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <main class="shop">
@@ -23,35 +19,61 @@
         <p class="shop__eyebrow">
           <a href="/">raisaahmed.com</a>
         </p>
-        <h1 class="shop__title">Shop</h1>
+        <h1 class="shop__title">Raisa&rsquo;s Stripe Shop</h1>
         <p class="shop__lead">
-          Practical guides on ambition, lifestyle, and navigating rooms you
-          weren&rsquo;t born into.
+          Help me penny test my Stripe integration and support my page at the
+          same time &gt;:)
         </p>
       </header>
 
       <p class="shop-notice" id="shop-notice" role="alert" hidden></p>
 
       <section class="catalog" aria-label="Products">
-        <article class="product-card" data-product-id="ambition-guide">
-          <h2 class="product-card__name">Practical Ambition Guide</h2>
+        <article class="product-card" data-product-id="stranger">
+          <h2 class="product-card__name">Stranger 🙂</h2>
           <p class="product-card__desc">
-            A digital guide on lifestyle, ambition, and showing up with grit.
+            You don&rsquo;t really know me, but you&rsquo;ll help penny test
+            anyways!
           </p>
-          <p class="product-card__price">$29.00</p>
+          <p class="product-card__price">$1.00</p>
           <button type="button" class="btn btn--primary product-card__buy">
-            Buy now
+            <span class="btn__label">Pay</span>
           </button>
         </article>
 
-        <article class="product-card" data-product-id="room-playbook">
-          <h2 class="product-card__name">Room Playbook</h2>
+        <article class="product-card" data-product-id="acquaintance">
+          <h2 class="product-card__name">Acquaintance 😊</h2>
           <p class="product-card__desc">
-            Frameworks for confidence in spaces that weren&rsquo;t built for you.
+            Were we in the same math class in 10th grade? Then you&rsquo;re
+            doing just fine and can throw in a few more dollars!
           </p>
-          <p class="product-card__price">$19.00</p>
+          <p class="product-card__price">$5.00</p>
           <button type="button" class="btn btn--primary product-card__buy">
-            Buy now
+            <span class="btn__label">Pay</span>
+          </button>
+        </article>
+
+        <article class="product-card" data-product-id="friend">
+          <h2 class="product-card__name">Friend 😘</h2>
+          <p class="product-card__desc">
+            You sent me a partiful invite recently, didn&rsquo;t you? Don&rsquo;t
+            be shy!
+          </p>
+          <p class="product-card__price">$20.00</p>
+          <button type="button" class="btn btn--primary product-card__buy">
+            <span class="btn__label">Pay</span>
+          </button>
+        </article>
+
+        <article class="product-card" data-product-id="bestie">
+          <h2 class="product-card__name">Bestie 😍</h2>
+          <p class="product-card__desc">
+            I repost stories with you all the time. Don&rsquo;t click this
+            option, just venmo me so I&rsquo;m not paying Stripe fees ❤️
+          </p>
+          <p class="product-card__price">$50.00</p>
+          <button type="button" class="btn btn--primary product-card__buy">
+            <span class="btn__label">Pay</span>
           </button>
         </article>
       </section>
@@ -88,7 +110,7 @@
           <p class="payment-message" id="payment-message" role="alert"></p>
 
           <button type="submit" class="btn btn--primary btn--pay" id="submit" disabled>
-            <span id="button-text">Pay now</span>
+            <span id="button-text">Pay</span>
             <span class="btn__spinner" id="spinner" hidden aria-hidden="true"></span>
           </button>
         </form>

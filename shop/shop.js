@@ -1,6 +1,8 @@
 const PRODUCT_NAMES = {
-  "ambition-guide": "Practical Ambition Guide",
-  "room-playbook": "Room Playbook",
+  stranger: "Stranger 🙂",
+  acquaintance: "Acquaintance 😊",
+  friend: "Friend 😘",
+  bestie: "Bestie 😍",
 };
 
 const catalog = document.querySelector(".catalog");
@@ -132,11 +134,11 @@ async function startCheckout(productId) {
     const appearance = {
       theme: "stripe",
       variables: {
-        colorPrimary: "#b85c4a",
+        colorPrimary: "#635bff",
         colorBackground: "#faf7f2",
         colorText: "#2d2a26",
         borderRadius: "12px",
-        fontFamily: "Lora, Georgia, serif",
+        fontFamily: '"Lora", Georgia, "Times New Roman", serif',
       },
     };
 
@@ -148,7 +150,7 @@ async function startCheckout(productId) {
     checkout.on("change", (session) => {
       submitBtn.disabled = !session.canConfirm;
       if (session.total?.total?.amount) {
-        buttonText.textContent = `Pay ${session.total.total.amount} now`;
+        buttonText.textContent = `Pay ${session.total.total.amount}`;
       }
     });
 

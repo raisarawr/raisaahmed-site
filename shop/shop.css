@@ -5,12 +5,15 @@
   --muted: #6b6560;
   --accent: #b85c4a;
   --accent-hover: #a45242;
+  --stripe: #635bff;
+  --stripe-hover: #5851d6;
+  --stripe-glow: rgba(99, 91, 255, 0.45);
   --accent-secondary: #7a9eb8;
   --border: #e8e2d9;
   --shadow-sm: 0 2px 8px rgba(45, 42, 38, 0.06);
   --shadow-md: 0 8px 24px rgba(45, 42, 38, 0.09);
-  --font-title: "Source Serif 4", Georgia, serif;
-  --font-body: "Lora", Georgia, serif;
+  --font-title: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Lora", Georgia, "Times New Roman", serif;
   --radius-pill: 9999px;
   --radius-card: 1rem;
   --max-width: 40rem;
@@ -22,14 +25,25 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100dvh;
   font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.65;
   color: var(--text);
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 .shop {
@@ -60,9 +74,11 @@ body {
 .shop__title {
   margin: 0 0 0.5rem;
   font-family: var(--font-title);
-  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
   font-weight: 600;
   letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text);
 }
 
 .shop__lead {
@@ -140,7 +156,10 @@ body {
   border: none;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
 .btn:disabled {
@@ -150,14 +169,114 @@ body {
 
 .btn--primary {
   color: #fff;
-  background: var(--accent);
+  background-color: var(--stripe);
   box-shadow: var(--shadow-sm);
 }
 
+.btn__label,
+.btn--primary #button-text {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+
+.btn--primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 38%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 62%,
+    transparent 100%
+  );
+  transform: translateX(-120%) skewX(-12deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--stripe),
+    #a89bff,
+    #7e73ff,
+    var(--stripe)
+  );
+  background-size: 300% 100%;
+  z-index: -1;
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 0.3s ease;
+}
+
 .btn--primary:hover:not(:disabled) {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background-color: var(--stripe-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 4px 14px rgba(99, 91, 255, 0.35),
+    0 0 24px var(--stripe-glow);
+  animation: btn-magic-glow 1.4s ease-in-out infinite alternate;
+}
+
+.btn--primary:hover:not(:disabled)::before {
+  animation: btn-shimmer 0.75s ease forwards;
+}
+
+.btn--primary:hover:not(:disabled)::after {
+  opacity: 0.7;
+  animation: btn-aura 2s linear infinite;
+}
+
+@keyframes btn-shimmer {
+  to {
+    transform: translateX(120%) skewX(-12deg);
+  }
+}
+
+@keyframes btn-magic-glow {
+  from {
+    box-shadow:
+      0 4px 14px rgba(99, 91, 255, 0.35),
+      0 0 20px var(--stripe-glow);
+  }
+  to {
+    box-shadow:
+      0 6px 20px rgba(99, 91, 255, 0.45),
+      0 0 32px rgba(99, 91, 255, 0.55),
+      0 0 48px rgba(168, 155, 255, 0.35);
+  }
+}
+
+@keyframes btn-aura {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 300% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary:hover:not(:disabled) {
+    animation: none;
+  }
+
+  .btn--primary:hover:not(:disabled)::before,
+  .btn--primary:hover:not(:disabled)::after {
+    animation: none;
+  }
+
+  .btn--primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
 }
 
 .btn--ghost {
