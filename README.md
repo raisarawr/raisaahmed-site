@@ -1,8 +1,17 @@
 # raisaahmed.com
 
-A single-page static site for [raisaahmed.com](https://raisaahmed.com).
+Personal site and shop for [raisaahmed.com](https://raisaahmed.com).
+
+| What | Where |
+|------|--------|
+| **Hosting** | [Vercel](https://vercel.com) |
+| **DNS** | [Cloudflare](https://dash.cloudflare.com) (domain only — no Stripe keys here) |
+| **Shop** | https://raisaahmed.com/shop |
+| **Payments** | Stripe via Vercel `/api/*` routes |
 
 ## Local preview
+
+**Static only** (no checkout API):
 
 ```bash
 cd /Users/raisa/raisaahmed-site
@@ -11,6 +20,13 @@ python3 -m http.server 8080
 
 Open http://localhost:8080
 
+**Full site + shop + Stripe** (requires `.env.local`):
+
+```bash
+npm install
+npx vercel dev
+```
+
 ## Typography (Google Fonts)
 
 Fonts load from [Google Fonts](https://fonts.google.com) via the stylesheet link in `index.html`:
@@ -18,7 +34,7 @@ Fonts load from [Google Fonts](https://fonts.google.com) via the stylesheet link
 - **Source Serif 4** (600–700) — hero title (`Hi, I'm Raisa`)
 - **Lora** (400, 500, 600) — about copy, buttons, footer
 
-CSS variables in `styles.css`: `--font-title` and `--font-body`. No API key or kit setup required.
+CSS variables in `styles.css`: `--font-title` and `--font-body`.
 
 ## Color palette
 
@@ -31,48 +47,46 @@ Photo-inspired, bright editorial theme (see `:root` in `styles.css`):
 | Text | `--text` | `#2d2a26` |
 | Muted | `--muted` | `#6b6560` |
 | Primary CTA | `--accent` | `#b85c4a` (brick terracotta) |
-| Secondary / links | `--accent-secondary` | `#7a9eb8` (sky blue, knit outfit) |
-| Mint accent | `--accent-mint` | `#8fbfb0` (Fiat) |
+| Secondary / links | `--accent-secondary` | `#7a9eb8` (sky blue) |
+| Mint accent | `--accent-mint` | `#8fbfb0` |
 | Borders | `--border` | `#e8e2d9` |
 
 ## Portrait images
 
-Drop three portrait photos into `images/` (left → right in the gallery):
+Gallery order (left → right):
 
 - `portrait-fiat.jpg` — mint-green Fiat, light-blue knit
 - `portrait-trench.jpg` — tan trench, headscarf, sunglasses
 - `portrait-brownstone.jpg` — red door, brownstone steps
 
-See `images/README.md` for the full mapping (Desktop `portrait-1` / `portrait-2` names do **not** match these files).
+See `images/README.md` for file naming notes.
 
 ## Project files
 
-| File | Purpose |
+| Path | Purpose |
 |------|---------|
-| `index.html` | Content and structure |
-| `styles.css` | Photo-inspired light theme, horizontal portrait gallery, animations |
-| `script.js` | Parallax on pointer/scroll, footer year |
-| `images/` | Portrait assets |
+| `index.html`, `styles.css`, `script.js` | Main site |
+| `shop/` | Shop at `/shop` |
+| `api/` | Vercel serverless (Stripe) |
+| `lib/products.js` | Shop catalog |
+| `vercel.json` | Redirects |
 
-## Deploy on Cloudflare Pages (free)
+## Shop (Stripe)
 
-1. Push this folder to a **GitHub** repository (public or private).
-2. In [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-3. Select the repo. Build settings:
-   - **Framework preset:** None
-   - **Build command:** (leave empty)
-   - **Build output directory:** `/` (project root)
-4. Deploy. Note the `*.pages.dev` URL and confirm the site looks correct.
-5. **Custom domain:** Pages project → **Custom domains** → add `raisaahmed.com` and `www.raisaahmed.com`. Cloudflare will add DNS records automatically if the domain is on the same account.
-6. **Substack:** If `raisaahmed.com` is still set as your publication domain in Substack, remove it so DNS can point to Pages.
-7. **SSL:** Keep **Full** under SSL/TLS (default on Cloudflare).
+See **[SHOP.md](./SHOP.md)** for launch order, Vercel env vars, and checkout testing.
 
-### Direct upload (no GitHub)
+## Deploy on Vercel (hosting)
 
-Workers & Pages → Create → **Upload assets** → drag the project folder. Re-upload when you change files.
+1. Push this repo to **GitHub**.
+2. [Vercel](https://vercel.com) → **Add New Project** → import the repo.
+3. Framework: **Other**. Leave build command empty. Output directory: root (`.`).
+4. Deploy; confirm the `*.vercel.app` URL works.
+5. **Settings → Domains** → add `raisaahmed.com` and `www.raisaahmed.com`.
+6. In **Cloudflare DNS**, point the domain at Vercel using the records Vercel shows (remove old conflicting apex/`www` records).
+7. For payments: add Stripe env vars in **Vercel** (see [SHOP.md](./SHOP.md) Phase B) and redeploy.
 
 ## Edit content
 
-- Copy: `index.html`
-- Styles: `styles.css`
-- Motion: `script.js`
+- Main site copy: `index.html`
+- Main styles: `styles.css`
+- Shop: `shop/` and `lib/products.js`

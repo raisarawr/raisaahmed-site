@@ -1,0 +1,8 @@
+{
+  "name": "raisaahmed-site",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "stripe": "^18.4.0"
+  }
+}
